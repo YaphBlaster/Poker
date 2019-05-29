@@ -9,25 +9,24 @@ namespace Poker
 
         // these are needed on every test
         List<Player> Players = new List<Player>();
+        List<Card> Hand = new List<Card>();
+
 
         [TestInitialize]
         public void TestInitialize()
         {
             Players.Clear();
+            Hand.Clear();
         }
 
 
         [TestMethod]
         public void Flush()
         {
-            var Name = "Joe";
-            var Hand = new List<Card>();
+            var name = "Joe";
             var cards = "2h, 3h, 4h, 5h, 6h";
 
-            //Act
-            Program.CreateHand(cards, Hand);
-            Program.SortCards(Hand);
-            Players.Add(new Player(Name, Hand));
+            CreatePlayer(name, cards);
 
             var result = Program.EvaluatePokerHands(Players);
 
@@ -41,14 +40,13 @@ namespace Poker
         public void ThreeOfAKind()
         {
             //Arrange
-            var Name = "Joe";
-            var Hand = new List<Card>();
+            var name = "Joe";
             var cards = "2h, 2c, 2d, 7h, 7s";
 
             //Act
             Program.CreateHand(cards, Hand);
             Program.SortCards(Hand);
-            Players.Add(new Player(Name, Hand));
+            Players.Add(new Player(name, Hand));
 
             var result = Program.EvaluatePokerHands(Players);
 
@@ -63,14 +61,13 @@ namespace Poker
         public void OnePair()
         {
             //Arrange
-            var Name = "Joe";
-            var Hand = new List<Card>();
+            var name = "Joe";
             var cards = "2h, 2c, 3c, 6s, 7s";
 
             //Act
             Program.CreateHand(cards, Hand);
             Program.SortCards(Hand);
-            Players.Add(new Player(Name, Hand));
+            Players.Add(new Player(name, Hand));
 
             var result = Program.EvaluatePokerHands(Players);
 
@@ -83,14 +80,13 @@ namespace Poker
         [TestMethod]
         public void Nothing()
         {
-            var Name = "Joe";
-            var Hand = new List<Card>();
+            var name = "Joe";
             var cards = "5C, 7D, 8H, 9S, QD";
 
             //Act
             Program.CreateHand(cards, Hand);
             Program.SortCards(Hand);
-            Players.Add(new Player(Name, Hand));
+            Players.Add(new Player(name, Hand));
 
             var result = Program.EvaluatePokerHands(Players);
 
@@ -111,7 +107,7 @@ namespace Poker
                 "4S, 4H, 3H, QC, 8C" };
 
 
-            CreatePlayers(playerNames, playerCards, Players);
+            CreatePlayers(playerNames, playerCards);
 
 
             var result = Program.EvaluatePokerHands(Players);
@@ -130,7 +126,7 @@ namespace Poker
             string[] playerCards = { "QD, 8D, KD, 7D, 3D", "AS, QS, 8S, 6S, 4S", "4S, 4H, 3H, QC, 8C" };
 
 
-            CreatePlayers(playerNames, playerCards, Players);
+            CreatePlayers(playerNames, playerCards);
 
 
             var result = Program.EvaluatePokerHands(Players);
@@ -152,7 +148,7 @@ namespace Poker
                 "2H, 2C, 5S, 10C, AH" };
 
 
-            CreatePlayers(playerNames, playerCards, Players);
+            CreatePlayers(playerNames, playerCards);
 
 
             var result = Program.EvaluatePokerHands(Players);
@@ -173,7 +169,7 @@ namespace Poker
                 "2C, 4D, 5S, 10C, JH" };
 
 
-            CreatePlayers(playerNames, playerCards, Players);
+            CreatePlayers(playerNames, playerCards);
 
 
             var result = Program.EvaluatePokerHands(Players);
@@ -194,7 +190,7 @@ namespace Poker
                 "2C, 4D, 5S, 10C, JH" };
 
 
-            CreatePlayers(playerNames, playerCards, Players);
+            CreatePlayers(playerNames, playerCards);
 
 
             var result = Program.EvaluatePokerHands(Players);
@@ -205,18 +201,26 @@ namespace Poker
             Assert.AreEqual("12", result["highCard"]);
         }
 
-        private void CreatePlayers(string[] playerNames, string[] playerCards, List<Player> Players)
+
+        private void CreatePlayer(string playerName, string playerCards, List<Card> hand = null)
+        {
+            var handTemp = hand == null ? Hand : hand;
+            //Act
+            Program.CreateHand(playerCards, handTemp);
+            Program.SortCards(handTemp);
+            Players.Add(new Player(playerName, handTemp));
+
+
+        }
+
+        private void CreatePlayers(string[] playerNames, string[] playerHands)
         {
             //For every section in the input array
             for (var i = 0; i < playerNames.Length; i++)
             {
-                var Hand = new List<Card>();
+                var hand = new List<Card>();
 
-
-                //Act
-                Program.CreateHand(playerCards[i], Hand);
-                Program.SortCards(Hand);
-                Players.Add(new Player(playerNames[i], Hand));
+                CreatePlayer(playerNames[i], playerHands[i], hand);
             }
 
 
