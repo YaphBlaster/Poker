@@ -196,7 +196,7 @@ namespace Poker
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
-            Assert.AreEqual("Joe and Jen both split the pot", result["winner"]);
+            Assert.AreEqual("Joe and Jen and Bob split the pot", result["winner"]);
             Assert.AreEqual("Nothing", result["hand"]);
             Assert.AreEqual("12", result["highCard"]);
         }

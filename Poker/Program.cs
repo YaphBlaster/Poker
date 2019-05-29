@@ -133,6 +133,7 @@ namespace Poker
         public static Dictionary<string, string> EvaluatePokerHands(List<Player> players)
         {
             var currentWinner = "";
+            bool tie = false;
 
             //Set the winnerHand to Nothing
             EvaluateHand winnerHand = null;
@@ -178,8 +179,8 @@ namespace Poker
 
                         if (count == 5)
                         {
-
-                            currentWinner += " and " + player.Name + " both split the pot";
+                            tie = true;
+                            currentWinner += " and " + player.Name;
                         }
 
 
@@ -196,7 +197,7 @@ namespace Poker
                 }
             }
 
-
+            currentWinner = tie ? currentWinner + " split the pot" : currentWinner;
 
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("winner", currentWinner);
