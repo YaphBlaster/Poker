@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Poker
@@ -7,11 +6,20 @@ namespace Poker
     [TestClass]
     public class ProgramTests
     {
+
+        // these are needed on every test
+        List<Player> Players = new List<Player>();
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Players.Clear();
+        }
+
+
         [TestMethod]
         public void Flush()
         {
-            //Arrange
-            List<Player> Players = new List<Player>();
             var Name = "Joe";
             var Hand = new List<Card>();
             var cards = "2h, 3h, 4h, 5h, 6h";
@@ -33,7 +41,6 @@ namespace Poker
         public void ThreeOfAKind()
         {
             //Arrange
-            List<Player> Players = new List<Player>();
             var Name = "Joe";
             var Hand = new List<Card>();
             var cards = "2h, 2c, 2d, 7h, 7s";
@@ -56,7 +63,6 @@ namespace Poker
         public void OnePair()
         {
             //Arrange
-            List<Player> Players = new List<Player>();
             var Name = "Joe";
             var Hand = new List<Card>();
             var cards = "2h, 2c, 3c, 6s, 7s";
@@ -77,8 +83,6 @@ namespace Poker
         [TestMethod]
         public void Nothing()
         {
-            //Arrange
-            List<Player> Players = new List<Player>();
             var Name = "Joe";
             var Hand = new List<Card>();
             var cards = "5C, 7D, 8H, 9S, QD";
@@ -99,9 +103,6 @@ namespace Poker
         [TestMethod]
         public void Example1()
         {
-            //Arrange
-            List<Player> Players = new List<Player>();
-
 
             string[] playerNames = { "Joe", "Bob", "Sally" };
             string[] playerCards = {
@@ -124,9 +125,6 @@ namespace Poker
         [TestMethod]
         public void Example2()
         {
-            //Arrange
-            List<Player> Players = new List<Player>();
-
 
             string[] playerNames = { "Joe", "Bob", "Sally" };
             string[] playerCards = { "QD, 8D, KD, 7D, 3D", "AS, QS, 8S, 6S, 4S", "4S, 4H, 3H, QC, 8C" };
@@ -146,9 +144,6 @@ namespace Poker
         [TestMethod]
         public void Example3()
         {
-            //Arrange
-            List<Player> Players = new List<Player>();
-
 
             string[] playerNames = { "Joe", "Jen", "Bob" };
             string[] playerCards = {
@@ -163,7 +158,7 @@ namespace Poker
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
-            Assert.AreEqual("Joe and Jen", result["winner"]);
+            Assert.AreEqual("Jen", result["winner"]);
             Assert.AreEqual("OnePair", result["hand"]);
             Assert.AreEqual("9", result["highCard"]);
         }
@@ -171,10 +166,6 @@ namespace Poker
         [TestMethod]
         public void Example4()
         {
-            //Arrange
-            List<Player> Players = new List<Player>();
-
-
             string[] playerNames = { "Joe", "Jen", "Bob" };
             string[] playerCards = {
                 "2H, 3D, 4C, 5D, 10H",
@@ -193,10 +184,29 @@ namespace Poker
             Assert.AreEqual("12", result["highCard"]);
         }
 
+        [TestMethod]
+        public void SameCards()
+        {
+            string[] playerNames = { "Joe", "Jen", "Bob" };
+            string[] playerCards = {
+                "5D, 7C, 8D, 9C, QJ",
+                "5C, 7D, 8H, 9S, QD",
+                "2C, 4D, 5S, 10C, JH" };
+
+
+            CreatePlayers(playerNames, playerCards, Players);
+
+
+            var result = Program.EvaluatePokerHands(Players);
+
+            //Assert
+            Assert.AreEqual("Joe and Jen both split the pot", result["winner"]);
+            Assert.AreEqual("Nothing", result["hand"]);
+            Assert.AreEqual("12", result["highCard"]);
+        }
+
         private void CreatePlayers(string[] playerNames, string[] playerCards, List<Player> Players)
         {
-
-
             //For every section in the input array
             for (var i = 0; i < playerNames.Length; i++)
             {

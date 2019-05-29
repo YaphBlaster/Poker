@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Poker
 {
@@ -15,8 +11,7 @@ namespace Poker
         Nothing,
         OnePair,
         ThreeOfAKind,
-        Flush,
-        RoyalFlush
+        Flush
     }
 
     class EvaluateHand
@@ -29,6 +24,7 @@ namespace Poker
         private List<Card> cards;
         public int HighCard { get; set; }
         public Hand MyHand { get; private set; }
+        public List<int> cardNumbers = new List<int>();
 
         public EvaluateHand(List<Card> Hand)
         {
@@ -57,6 +53,11 @@ namespace Poker
 
         private Hand EvaluateMyHand()
         {
+            foreach (var card in cards)
+            {
+                cardNumbers.Add((int)card.MyValue);
+            }
+
             if (Flush())
                 return Hand.Flush;
             else if (ThreeOfAKind())

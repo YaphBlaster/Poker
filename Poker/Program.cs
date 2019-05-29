@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Poker
 {
@@ -128,6 +126,7 @@ namespace Poker
             }
         }
 
+
         /// <summary>
         /// Evaluate the Player's hand
         /// </summary>
@@ -157,8 +156,35 @@ namespace Poker
                     //Check if the current player high card is equal to the winning player high card
                     if (tempEvaluateHand.HighCard == winnerHand.HighCard)
                     {
-                        //both the players are the winners
-                        currentWinner += " and " + player.Name;
+                        ////both the players are the winners
+                        //currentWinner += " and " + player.Name;
+
+                        var count = 0;
+                        for (var i = 4; i >= 0; i--)
+                        {
+                            if (tempEvaluateHand.cardNumbers[i] > winnerHand.cardNumbers[i])
+                            {
+                                currentWinner = player.Name;
+                                winnerHand = tempEvaluateHand;
+
+                            }
+                            else if (tempEvaluateHand.cardNumbers[i] == winnerHand.cardNumbers[i])
+                            {
+                                count++;
+                            }
+
+
+                        };
+
+                        if (count == 5)
+                        {
+
+                            currentWinner += " and " + player.Name + " both split the pot";
+                        }
+
+
+
+
                     }
                     //If the current player high card is greater than the winning player high card
                     else if (tempEvaluateHand.HighCard > winnerHand.HighCard)
