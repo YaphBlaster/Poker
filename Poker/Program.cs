@@ -9,7 +9,7 @@ namespace Poker
         private const string SelectionInstructions =
             "\nPlease enter the number of the following options:" +
             "\n 1. Enter Player with Hand" +
-            "\n 2. Run Game" +
+            "\n 2. Evaluate Hands" +
             "\n 3. Quit";
 
         private static List<Player> Players = new List<Player>();
@@ -213,7 +213,7 @@ namespace Poker
                 }
             }
 
-            //Dictionary to return
+            //Create dictionary with winner name, hand, and high card
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("winner", currentWinner);
             dict.Add("hand", winnerHand.MyHand.ToString());
