@@ -28,7 +28,7 @@ namespace Poker
             {
                 if (Players.Count > 0)
                 {
-                    Console.WriteLine(Players.Count + " player " + (Players.Count > 1 ? "s" : null) + " currently at the table");
+                    Console.WriteLine(Players.Count + " player" + (Players.Count > 1 ? "s" : null) + " currently at the table");
                 }
 
                 //Show instructions
@@ -50,11 +50,15 @@ namespace Poker
                         Console.Clear();
                         //Evaluate the hands of the players
                         var winner = EvaluatePokerHands(Players);
+                        var splitPotMessage = ". They will have to split the pot";
 
                         //Display the winner and winning hand
-                        Console.WriteLine("The winner is: " + winner["winner"]);
+                        Console.WriteLine("\nThe " + (Players.Count > 1 ? "winners are" : "winner is") + ": " + winner["winner"] + (Players.Count > 1 ? splitPotMessage : null));
                         Console.WriteLine("With a hand of: " + winner["hand"]);
-                        Console.WriteLine("And a high card of: " + winner["highCard"]);
+                        Console.WriteLine("And a high card of: " + (Card.VALUE)Int32.Parse(winner["highCard"]));
+
+                        //Clear the Players list for the next players
+                        Players.Clear();
                         break;
                 }
             }//Exit if the user has chosen option 3
@@ -71,7 +75,7 @@ namespace Poker
         public static void GetPlayerInfo()
         {
             Console.Clear();
-            Console.WriteLine("Please enter you name");
+            Console.WriteLine("\nPlease enter you name");
 
             //Split the user inputted information by each comma
             var name = Console.ReadLine();
@@ -79,7 +83,6 @@ namespace Poker
             Console.WriteLine("\nPlease enter your hand (Ex: 2h,3h,4h,5h,6h)");
 
             var cards = Console.ReadLine();
-
 
             //Create a new Hand of Cards
             var Hand = new List<Card>();
@@ -147,7 +150,6 @@ namespace Poker
         public static Dictionary<string, string> EvaluatePokerHands(List<Player> players)
         {
             var currentWinner = "";
-            bool tie = false;
 
             //Set the winnerHand to Nothing
             EvaluateHand winnerHand = null;
@@ -194,9 +196,7 @@ namespace Poker
                         //If the current hand's cards all match the winning hand's cards
                         if (count == 5)
                         {
-                            //A tie has occurred
-                            tie = true;
-
+                            //A Tie has occurred
                             //Add the current player
                             currentWinner += " and " + player.Name;
                         }
@@ -212,16 +212,11 @@ namespace Poker
                 }
             }
 
-            //If there was a tie, we need to split the pot
-            currentWinner = tie ? currentWinner + " split the pot" : currentWinner;
-
             //Dictionary to return
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("winner", currentWinner);
             dict.Add("hand", winnerHand.MyHand.ToString());
             dict.Add("highCard", winnerHand.HighCard.ToString());
-
-            Players.Clear();
 
             //Return the dictionary
             return dict;

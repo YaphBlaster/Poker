@@ -182,7 +182,7 @@ namespace Poker
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
-            Assert.AreEqual("Joe and Jen split the pot", result["winner"]);
+            Assert.AreEqual("Joe and Jen", result["winner"]);
             Assert.AreEqual("Nothing", result["hand"]);
             Assert.AreEqual("12", result["highCard"]);
         }
@@ -202,7 +202,7 @@ namespace Poker
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
-            Assert.AreEqual("Joe and Jen and Bob split the pot", result["winner"]);
+            Assert.AreEqual("Joe and Jen and Bob", result["winner"]);
             Assert.AreEqual("Flush", result["hand"]);
             Assert.AreEqual("6", result["highCard"]);
         }
