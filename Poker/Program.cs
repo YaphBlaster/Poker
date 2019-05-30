@@ -56,6 +56,7 @@ namespace Poker
                         Console.WriteLine("\nThe " + (Players.Count > 1 ? "winners are" : "winner is") + ": " + winner["winner"] + (Players.Count > 1 ? splitPotMessage : null));
                         Console.WriteLine("With a hand of: " + winner["hand"]);
                         Console.WriteLine("And a high card of: " + (Card.VALUE)Int32.Parse(winner["highCard"]));
+                        Console.WriteLine("-------------------------");
 
                         //Clear the Players list for the next players
                         Players.Clear();
