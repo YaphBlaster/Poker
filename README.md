@@ -14,7 +14,7 @@ After cloning the repository, please clean and build the solution to restore the
 ## Assumptions
 
 - There are 2 or more players in every round
-- The user has inputted one name followed by 5 cards all separated by commas
+- The user has inputted 5 cards separated by commas
   - EX: (2h,3h,4h,5h,6h)
 - The user may send an unordered list of cards
 - The user has not inputted any negative values
