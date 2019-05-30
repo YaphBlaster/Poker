@@ -140,7 +140,6 @@ namespace Poker
             //For each player
             foreach (var player in players)
             {
-
                 var tempEvaluateHand = new EvaluateHand(player.Cards);
 
                 //If the current hand is greater than the current winning hand
@@ -156,7 +155,6 @@ namespace Poker
                     //Check if the current player high card is equal to the winning player high card
                     if (tempEvaluateHand.HighCard == winnerHand.HighCard)
                     {
-
                         var count = 0;
 
                         //Check the hand in reverse order
@@ -189,9 +187,6 @@ namespace Poker
                             //Add the current player
                             currentWinner += " and " + player.Name;
                         }
-
-
-
 
                     }
                     //If the current player high card is greater than the winning player high card

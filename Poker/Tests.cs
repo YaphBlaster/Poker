@@ -8,6 +8,8 @@ namespace Poker
     {
         // these are needed on every test
         List<Player> Players = new List<Player>();
+        string Name = "Joe";
+
 
         // Before every test runs, clear the Players list
         [TestInitialize]
@@ -21,11 +23,10 @@ namespace Poker
         public void CanDetectFlush()
         {
             //Arrange
-            var name = "Joe";
             var cards = "2h, 3h, 4h, 5h, 6h";
 
             // Act
-            CreatePlayer(name, cards);
+            CreatePlayer(Name, cards);
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
@@ -36,11 +37,10 @@ namespace Poker
         public void CanDetectThreeOfAKind()
         {
             //Arrange
-            var name = "Joe";
             var cards = "2h, 2c, 2d, 7h, 7s";
 
             //Act
-            CreatePlayer(name, cards);
+            CreatePlayer(Name, cards);
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
@@ -52,11 +52,10 @@ namespace Poker
         public void CanDetectOnePair()
         {
             //Arrange
-            var name = "Joe";
             var cards = "2h, 2c, 3c, 6s, 7s";
 
             //Act
-            CreatePlayer(name, cards);
+            CreatePlayer(Name, cards);
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
@@ -67,11 +66,10 @@ namespace Poker
         public void CanDetectNothing()
         {
             //Arrange
-            var name = "Joe";
             var cards = "5C, 7D, 8H, 9S, QD";
 
             //Act
-            CreatePlayer(name, cards);
+            CreatePlayer(Name, cards);
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
@@ -82,11 +80,10 @@ namespace Poker
         public void CanDetermineHighCard()
         {
             //Arrange
-            var name = "Joe";
             var cards = "5C, 7D, 8H, 9S, QD";
 
             //Act
-            CreatePlayer(name, cards);
+            CreatePlayer(Name, cards);
             var result = Program.EvaluatePokerHands(Players);
 
             //Assert
