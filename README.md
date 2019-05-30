@@ -5,7 +5,7 @@ Poker Hand Evaluator
 ## Table of Contents
 
 - [Cloning Notes](#cloning-notes)
-- [Assumptions](#Assumptions)
+- [Assumptions](#assumptions)
 
 ## Cloning Notes
 
