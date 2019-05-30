@@ -53,6 +53,7 @@ namespace Poker
 
         private Hand EvaluateMyHand()
         {
+            // Arrange the card numbers into a list to be used to determine tie breakers
             foreach (var card in cards)
             {
                 cardNumbers.Add((int)card.MyValue);
@@ -72,8 +73,10 @@ namespace Poker
 
         }
 
-
-        private void GetNumberOfSuit()
+        /// <summary>
+        /// Evaluates the number of specific suits in each hand
+        /// </summary>
+        private void NumberOfSuits()
         {
             //Clear out any previous attempt
             heartsSum = 0;
@@ -140,10 +143,14 @@ namespace Poker
             return false;
         }
 
+        /// <summary>
+        /// Evaluate if there is a flush
+        /// </summary>
+        /// <returns>If flush is true of false</returns>
         private bool Flush()
         {
             //get the number of each suit on hand
-            GetNumberOfSuit();
+            NumberOfSuits();
 
             //set the high card in case of a tie
             HighCard = (int)cards[4].MyValue;

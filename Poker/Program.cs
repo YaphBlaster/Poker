@@ -27,7 +27,7 @@ namespace Poker
             do
             {
                 //Show instructions
-                Console.WriteLine("\n" + SelectionInstructions);
+                Console.WriteLine(SelectionInstructions);
 
                 //Parse the option that the user entered
                 chosenOption = int.Parse(Console.ReadLine());
@@ -46,7 +46,6 @@ namespace Poker
                         Console.WriteLine("\n The winner is: " + winner["winner"]);
                         Console.WriteLine("\n With a hand of: " + winner["hand"]);
                         Console.WriteLine("\n And a high card of: " + winner["highCard"]);
-
                         break;
                 }
             }//Exit if the user has chosen option 3
@@ -157,29 +156,37 @@ namespace Poker
                     //Check if the current player high card is equal to the winning player high card
                     if (tempEvaluateHand.HighCard == winnerHand.HighCard)
                     {
-                        ////both the players are the winners
-                        //currentWinner += " and " + player.Name;
 
                         var count = 0;
+
+                        //Check the hand in reverse order
                         for (var i = 4; i >= 0; i--)
                         {
+                            //If the current hand's kicker card is higher than the winner hand's kicker card
                             if (tempEvaluateHand.cardNumbers[i] > winnerHand.cardNumbers[i])
                             {
+                                //Replace the current winning hand
                                 currentWinner = player.Name;
                                 winnerHand = tempEvaluateHand;
 
                             }
+                            //If the current hand's kicker card is equal to winning hand's kicker card
                             else if (tempEvaluateHand.cardNumbers[i] == winnerHand.cardNumbers[i])
                             {
+                                //Increment the counter
                                 count++;
                             }
 
 
                         };
 
+                        //If the current hand's cards all match the winning hand's cards
                         if (count == 5)
                         {
+                            //A tie has occurred
                             tie = true;
+
+                            //Add the current player
                             currentWinner += " and " + player.Name;
                         }
 
@@ -197,13 +204,16 @@ namespace Poker
                 }
             }
 
+            //If there was a tie, we need to split the pot
             currentWinner = tie ? currentWinner + " split the pot" : currentWinner;
 
+            //Dictionary to return
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("winner", currentWinner);
             dict.Add("hand", winnerHand.MyHand.ToString());
             dict.Add("highCard", winnerHand.HighCard.ToString());
 
+            //Return the dictionary
             return dict;
 
 
