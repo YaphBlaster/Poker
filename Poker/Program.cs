@@ -71,7 +71,7 @@ namespace Poker
         /// Get players information (Name and Hand)
         /// 
         /// Information should be presented in this order:
-        /// Name, Card1, Card2, Card3, Card4, Card5
+        /// Card1, Card2, Card3, Card4, Card5
         /// </summary>
         public static void GetPlayerInfo()
         {
