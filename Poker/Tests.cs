@@ -224,8 +224,6 @@ namespace Poker
 
             //Add player to list of players
             Players.Add(new Player(playerName, hand));
-
-
         }
 
         /// <summary>

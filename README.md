@@ -2,16 +2,16 @@
 
 Poker Hand Evaluator
 
-## Table of Contents
+# Table of Contents
 
 - [Cloning Notes](#cloning-notes)
 - [Assumptions](#assumptions)
 
-## Cloning Notes
+# Cloning Notes
 
 After cloning the repository, please clean and build the solution to restore the TestingAdapter packages needed for running any tests.
 
-## Assumptions
+# Assumptions
 
 - There are 2 or more players in every round
 - The user has inputted 5 cards separated by commas
