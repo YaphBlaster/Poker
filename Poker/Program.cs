@@ -22,29 +22,37 @@ namespace Poker
         private static void Main(string[] args)
         {
             var chosenOption = 0;
-            Console.Clear();
 
             //Prompt user for input
             do
             {
+                if (Players.Count > 0)
+                {
+                    Console.WriteLine(Players.Count + " player " + (Players.Count > 1 ? "s" : null) + " currently at the table");
+                }
+
                 //Show instructions
                 Console.WriteLine(SelectionInstructions);
 
                 //Parse the option that the user entered
+                Console.Write("\nOption: ");
                 chosenOption = int.Parse(Console.ReadLine());
 
                 switch (chosenOption)
                 {
+
                     case 1:
                         //Get player information
                         GetPlayerInfo();
+                        Console.Clear();
                         break;
                     case 2:
+                        Console.Clear();
                         //Evaluate the hands of the players
                         var winner = EvaluatePokerHands(Players);
 
                         //Display the winner and winning hand
-                        Console.WriteLine("\nThe winner is: " + winner["winner"]);
+                        Console.WriteLine("The winner is: " + winner["winner"]);
                         Console.WriteLine("With a hand of: " + winner["hand"]);
                         Console.WriteLine("And a high card of: " + winner["highCard"]);
                         break;
@@ -212,6 +220,8 @@ namespace Poker
             dict.Add("winner", currentWinner);
             dict.Add("hand", winnerHand.MyHand.ToString());
             dict.Add("highCard", winnerHand.HighCard.ToString());
+
+            Players.Clear();
 
             //Return the dictionary
             return dict;
