@@ -21,6 +21,7 @@ After cloning the repository, please clean and build the solution to restore the
 - I make no assumption of how many times each specific card appears
 - The highest ranking hand is the winning hand
 - There is at least one winner in each round
+- Aces are high
 - Each card is represented by a value (2...10, J, Q, K, A) and a suit (H, C, S, D)
 - If there is a tie, the player with the greatest high card will determine the winner.
   - If the highest cards are the same, kicker rules will be applied until all 5 cards are out of play
