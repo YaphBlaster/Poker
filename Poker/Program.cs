@@ -14,6 +14,7 @@ namespace Poker
 
         private static List<Player> Players = new List<Player>();
 
+
         /// <summary>
         /// Main function to run program
         /// </summary>
@@ -43,14 +44,15 @@ namespace Poker
                         var winner = EvaluatePokerHands(Players);
 
                         //Display the winner and winning hand
-                        Console.WriteLine("\n The winner is: " + winner["winner"]);
-                        Console.WriteLine("\n With a hand of: " + winner["hand"]);
-                        Console.WriteLine("\n And a high card of: " + winner["highCard"]);
+                        Console.WriteLine("\nThe winner is: " + winner["winner"]);
+                        Console.WriteLine("With a hand of: " + winner["hand"]);
+                        Console.WriteLine("And a high card of: " + winner["highCard"]);
                         break;
                 }
             }//Exit if the user has chosen option 3
             while (chosenOption != 3);
         }
+
 
         /// <summary>
         /// Get players information (Name and Hand)
@@ -61,19 +63,18 @@ namespace Poker
         public static void GetPlayerInfo()
         {
             Console.Clear();
-            Console.WriteLine("\n Please enter you name");
+            Console.WriteLine("Please enter you name");
 
             //Split the user inputted information by each comma
             var name = Console.ReadLine();
 
-            Console.WriteLine("\n Please enter your hand (Ex: 2h,3h,4h,5h,6h)");
+            Console.WriteLine("\nPlease enter your hand (Ex: 2h,3h,4h,5h,6h)");
 
             var cards = Console.ReadLine();
 
 
             //Create a new Hand of Cards
             var Hand = new List<Card>();
-
 
             //Create Hand
             CreateHand(cards, Hand);
@@ -83,9 +84,13 @@ namespace Poker
 
             //Add the new player to the list of players
             Players.Add(new Player(name, Hand));
-
         }
 
+        /// <summary>
+        /// Creates a hand for the player that can be evaluated
+        /// </summary>
+        /// <param name="cards">String of cards sent from the user seperated by commas</param>
+        /// <param name="hand">Card list where a player's cards will go</param>
         public static void CreateHand(string cards, List<Card> hand)
         {
             //Split the user inputted information by each comma
@@ -104,6 +109,7 @@ namespace Poker
                 hand.Add(new Card(item.Substring(0, suitIndex), item.Substring(suitIndex)));
             }
         }
+
 
         /// <summary>
         /// Sorts the hand of cards based on the value
@@ -125,10 +131,11 @@ namespace Poker
             }
         }
 
-
         /// <summary>
-        /// Evaluate the Player's hand
+        /// Evaluates player hands
         /// </summary>
+        /// <param name="players">List of</param>
+        /// <returns></returns>
         public static Dictionary<string, string> EvaluatePokerHands(List<Player> players)
         {
             var currentWinner = "";
@@ -174,8 +181,6 @@ namespace Poker
                                 //Increment the counter
                                 count++;
                             }
-
-
                         };
 
                         //If the current hand's cards all match the winning hand's cards
@@ -210,8 +215,6 @@ namespace Poker
 
             //Return the dictionary
             return dict;
-
-
         }
     }
 }
