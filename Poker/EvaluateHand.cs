@@ -16,45 +16,45 @@ namespace Poker
 
     class EvaluateHand
     {
-        private int heartsSum;
-        private int diamondSum;
-        private int clubsSum;
-        private int spadesSum;
+        private int _HeartsSum;
+        private int _DiamondSum;
+        private int _ClubsSum;
+        private int _SpadesSum;
+        private List<Card> _Cards;
 
-        private List<Card> cards;
         public int HighCard { get; set; }
         public Hand MyHand { get; private set; }
         public List<int> cardNumbers = new List<int>();
 
         public EvaluateHand(List<Card> Hand)
         {
-            heartsSum = 0;
-            diamondSum = 0;
-            clubsSum = 0;
-            spadesSum = 0;
+            _HeartsSum = 0;
+            _DiamondSum = 0;
+            _ClubsSum = 0;
+            _SpadesSum = 0;
 
-            cards = Hand;
+            _Cards = Hand;
             MyHand = EvaluateMyHand();
         }
 
 
         public List<Card> Cards
         {
-            get { return cards; }
+            get { return _Cards; }
             set
             {
-                cards[0] = value[0];
-                cards[1] = value[1];
-                cards[2] = value[2];
-                cards[3] = value[3];
-                cards[4] = value[4];
+                _Cards[0] = value[0];
+                _Cards[1] = value[1];
+                _Cards[2] = value[2];
+                _Cards[3] = value[3];
+                _Cards[4] = value[4];
             }
         }
 
         private Hand EvaluateMyHand()
         {
             // Arrange the card numbers into a list to be used to determine tie breakers
-            foreach (var card in cards)
+            foreach (var card in _Cards)
             {
                 cardNumbers.Add((int)card.MyValue);
             }
@@ -67,7 +67,7 @@ namespace Poker
                 return Hand.OnePair;
 
             //If it's none of these options, than the highest card wins
-            HighCard = (int)cards[4].MyValue;
+            HighCard = (int)_Cards[4].MyValue;
             return Hand.Nothing;
 
 
@@ -79,23 +79,23 @@ namespace Poker
         private void NumberOfSuits()
         {
             //Clear out any previous attempt
-            heartsSum = 0;
-            diamondSum = 0;
-            clubsSum = 0;
-            spadesSum = 0;
+            _HeartsSum = 0;
+            _DiamondSum = 0;
+            _ClubsSum = 0;
+            _SpadesSum = 0;
 
             //For each element in the cards list
             //Increase the specific suit
             foreach (var element in Cards)
             {
                 if (element.MySuit == Card.SUIT.HEARTS)
-                    heartsSum++;
+                    _HeartsSum++;
                 else if (element.MySuit == Card.SUIT.DIAMONDS)
-                    diamondSum++;
+                    _DiamondSum++;
                 else if (element.MySuit == Card.SUIT.CLUBS)
-                    clubsSum++;
+                    _ClubsSum++;
                 else if (element.MySuit == Card.SUIT.SPADES)
-                    spadesSum++;
+                    _SpadesSum++;
 
             }
         }
@@ -112,9 +112,9 @@ namespace Poker
             for (int i = 4; i >= 2; i--)
             {
                 //If the current card and the previous 2 in hand match, we have a three of a kind
-                if (cards[i].MyValue == cards[i - 1].MyValue && cards[i].MyValue == cards[i - 2].MyValue)
+                if (_Cards[i].MyValue == _Cards[i - 1].MyValue && _Cards[i].MyValue == _Cards[i - 2].MyValue)
                 {
-                    HighCard = (int)cards[i].MyValue;
+                    HighCard = (int)_Cards[i].MyValue;
                     return true;
                 }
             }
@@ -132,9 +132,9 @@ namespace Poker
             for (int i = 4; i > 0; i--)
             {
                 // if the current card and the card next to it are equal
-                if (cards[i].MyValue == cards[i - 1].MyValue)
+                if (_Cards[i].MyValue == _Cards[i - 1].MyValue)
                 {
-                    HighCard = (int)cards[i].MyValue;
+                    HighCard = (int)_Cards[i].MyValue;
                     //The hand has a pair
                     return true;
                 }
@@ -153,10 +153,10 @@ namespace Poker
             NumberOfSuits();
 
             //set the high card in case of a tie
-            HighCard = (int)cards[4].MyValue;
+            HighCard = (int)_Cards[4].MyValue;
 
             //if all the suits are the same
-            return heartsSum == 5 || diamondSum == 5 || clubsSum == 5 || spadesSum == 5;
+            return _HeartsSum == 5 || _DiamondSum == 5 || _ClubsSum == 5 || _SpadesSum == 5;
         }
 
     }
