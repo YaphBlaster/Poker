@@ -12,8 +12,8 @@ namespace Poker
             "\n 2. Evaluate Hands" +
             "\n 3. Quit";
 
-        private static List<Player> Players = new List<Player>();
-        private static bool IsTie = false;
+        private static List<Player> _Players = new List<Player>();
+        private static bool _IsTie = false;
 
 
         /// <summary>
@@ -25,13 +25,12 @@ namespace Poker
             var chosenOption = 0;
             var splitPotMessage = ". They will have to split the pot";
 
-
             //Prompt user for input
             do
             {
-                if (Players.Count > 0)
+                if (_Players.Count > 0)
                 {
-                    Console.WriteLine(Players.Count + " player" + (Players.Count > 1 ? "s" : null) + " currently at the table");
+                    Console.WriteLine(_Players.Count + " player" + (_Players.Count > 1 ? "s" : null) + " currently at the table");
                 }
 
                 //Show instructions
@@ -52,18 +51,18 @@ namespace Poker
                     case 2:
                         Console.Clear();
                         //Evaluate the hands of the players
-                        var winner = EvaluatePokerHands(Players);
+                        var winner = EvaluatePokerHands(_Players);
 
 
                         //Display the winner and winning hand
-                        Console.WriteLine("\nThe " + (IsTie ? "winners are" : "winner is") + ": " + winner["winner"] + (IsTie ? splitPotMessage : null));
+                        Console.WriteLine("\nThe " + (_IsTie ? "winners are" : "winner is") + ": " + winner["winner"] + (_IsTie ? splitPotMessage : null));
                         Console.WriteLine("With a hand of: " + winner["hand"]);
                         Console.WriteLine("And a high card of: " + (Card.VALUE)int.Parse(winner["highCard"]));
                         Console.WriteLine("-------------------------");
 
                         //Clear the Players list for the next players
-                        Players.Clear();
-                        IsTie = false;
+                        _Players.Clear();
+                        _IsTie = false;
                         break;
                 }
             }//Exit if the user has chosen option 3
@@ -99,7 +98,7 @@ namespace Poker
             SortCards(Hand);
 
             //Add the new player to the list of players
-            Players.Add(new Player(name, Hand));
+            _Players.Add(new Player(name, Hand));
         }
 
         /// <summary>
@@ -171,7 +170,7 @@ namespace Poker
                     winnerHand = tempEvaluateHand;
                     currentWinner = player.Name;
 
-                    IsTie = false;
+                    _IsTie = false;
                 }
                 //If there is a tie with the current winning hand
                 else if (tempEvaluateHand.MyHand == winnerHand.MyHand)
@@ -191,7 +190,7 @@ namespace Poker
                                 currentWinner = player.Name;
                                 winnerHand = tempEvaluateHand;
 
-                                IsTie = false;
+                                _IsTie = false;
 
                             }
                             //If the current hand's kicker card is equal to winning hand's kicker card
@@ -206,7 +205,7 @@ namespace Poker
                         if (count == 5)
                         {
                             //A Tie has occurred
-                            IsTie = true;
+                            _IsTie = true;
 
                             //Add the current player
                             currentWinner += " and " + player.Name;
@@ -220,7 +219,7 @@ namespace Poker
                         winnerHand = tempEvaluateHand;
                         currentWinner = player.Name;
 
-                        IsTie = false;
+                        _IsTie = false;
                     }
                 }
             }
@@ -231,7 +230,7 @@ namespace Poker
                 { "winner", currentWinner },
                 { "hand", winnerHand.MyHand.ToString() },
                 { "highCard", winnerHand.HighCard.ToString()},
-                { "isTie", IsTie.ToString()},
+                { "isTie", _IsTie.ToString()},
             };
 
 
