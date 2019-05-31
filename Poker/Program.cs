@@ -13,7 +13,7 @@ namespace Poker
             "\n 3. Quit";
 
         private static List<Player> Players = new List<Player>();
-        private static bool tie = false;
+        private static bool IsTie = false;
 
 
         /// <summary>
@@ -54,14 +54,14 @@ namespace Poker
                         var splitPotMessage = ". They will have to split the pot";
 
                         //Display the winner and winning hand
-                        Console.WriteLine("\nThe " + (tie ? "winners are" : "winner is") + ": " + winner["winner"] + (tie ? splitPotMessage : null));
+                        Console.WriteLine("\nThe " + (IsTie ? "winners are" : "winner is") + ": " + winner["winner"] + (IsTie ? splitPotMessage : null));
                         Console.WriteLine("With a hand of: " + winner["hand"]);
                         Console.WriteLine("And a high card of: " + (Card.VALUE)int.Parse(winner["highCard"]));
                         Console.WriteLine("-------------------------");
 
                         //Clear the Players list for the next players
                         Players.Clear();
-                        tie = false;
+                        IsTie = false;
                         break;
                 }
             }//Exit if the user has chosen option 3
@@ -200,7 +200,7 @@ namespace Poker
                         if (count == 5)
                         {
                             //A Tie has occurred
-                            tie = true;
+                            IsTie = true;
 
                             //Add the current player
                             currentWinner += " and " + player.Name;
@@ -223,7 +223,7 @@ namespace Poker
                 { "winner", currentWinner },
                 { "hand", winnerHand.MyHand.ToString() },
                 { "highCard", winnerHand.HighCard.ToString()},
-                { "isTie", tie.ToString()},
+                { "isTie", IsTie.ToString()},
             };
 
 
