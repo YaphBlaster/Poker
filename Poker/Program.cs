@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Poker
 {
@@ -11,10 +9,12 @@ namespace Poker
         private const string SelectionInstructions =
             "\nPlease enter the number of the following options:" +
             "\n 1. Enter Player with Hand" +
-            "\n 2. Run Game" +
+            "\n 2. Evaluate Hands" +
             "\n 3. Quit";
 
         private static List<Player> Players = new List<Player>();
+        private static bool tie = false;
+
 
         /// <summary>
         /// Main function to run program
@@ -23,60 +23,72 @@ namespace Poker
         private static void Main(string[] args)
         {
             var chosenOption = 0;
-            Console.Clear();
 
             //Prompt user for input
             do
             {
+                if (Players.Count > 0)
+                {
+                    Console.WriteLine(Players.Count + " player" + (Players.Count > 1 ? "s" : null) + " currently at the table");
+                }
+
                 //Show instructions
-                Console.WriteLine("\n" + SelectionInstructions);
+                Console.WriteLine(SelectionInstructions);
 
                 //Parse the option that the user entered
+                Console.Write("\nOption: ");
                 chosenOption = int.Parse(Console.ReadLine());
 
                 switch (chosenOption)
                 {
+
                     case 1:
                         //Get player information
                         GetPlayerInfo();
+                        Console.Clear();
                         break;
                     case 2:
+                        Console.Clear();
                         //Evaluate the hands of the players
                         var winner = EvaluatePokerHands(Players);
+                        var splitPotMessage = ". They will have to split the pot";
 
                         //Display the winner and winning hand
-                        Console.WriteLine("\n The winner is: " + winner["winner"]);
-                        Console.WriteLine("\n With a hand of: " + winner["hand"]);
-                        Console.WriteLine("\n And a high card of: " + winner["highCard"]);
+                        Console.WriteLine("\nThe " + (tie ? "winners are" : "winner is") + ": " + winner["winner"] + (tie ? splitPotMessage : null));
+                        Console.WriteLine("With a hand of: " + winner["hand"]);
+                        Console.WriteLine("And a high card of: " + (Card.VALUE)int.Parse(winner["highCard"]));
+                        Console.WriteLine("-------------------------");
 
+                        //Clear the Players list for the next players
+                        Players.Clear();
+                        tie = false;
                         break;
                 }
             }//Exit if the user has chosen option 3
             while (chosenOption != 3);
         }
 
+
         /// <summary>
         /// Get players information (Name and Hand)
         /// 
         /// Information should be presented in this order:
-        /// Name, Card1, Card2, Card3, Card4, Card5
+        /// Card1, Card2, Card3, Card4, Card5
         /// </summary>
         public static void GetPlayerInfo()
         {
             Console.Clear();
-            Console.WriteLine("\n Please enter you name");
+            Console.WriteLine("\nPlease enter you name");
 
             //Split the user inputted information by each comma
             var name = Console.ReadLine();
 
-            Console.WriteLine("\n Please enter your hand (Ex: 2h,3h,4h,5h,6h)");
+            Console.WriteLine("\nPlease enter your hand (Ex: 2h,3h,4h,5h,6h)");
 
             var cards = Console.ReadLine();
 
-
             //Create a new Hand of Cards
             var Hand = new List<Card>();
-
 
             //Create Hand
             CreateHand(cards, Hand);
@@ -86,9 +98,13 @@ namespace Poker
 
             //Add the new player to the list of players
             Players.Add(new Player(name, Hand));
-
         }
 
+        /// <summary>
+        /// Creates a hand for the player that can be evaluated
+        /// </summary>
+        /// <param name="cards">String of cards sent from the user seperated by commas</param>
+        /// <param name="hand">Card list where a player's cards will go</param>
         public static void CreateHand(string cards, List<Card> hand)
         {
             //Split the user inputted information by each comma
@@ -107,6 +123,7 @@ namespace Poker
                 hand.Add(new Card(item.Substring(0, suitIndex), item.Substring(suitIndex)));
             }
         }
+
 
         /// <summary>
         /// Sorts the hand of cards based on the value
@@ -129,8 +146,10 @@ namespace Poker
         }
 
         /// <summary>
-        /// Evaluate the Player's hand
+        /// Evaluates player hands
         /// </summary>
+        /// <param name="players">List of players to evaluate their hands</param>
+        /// <returns>Dictionary object with winner name, hand, high card, and tie information</returns>
         public static Dictionary<string, string> EvaluatePokerHands(List<Player> players)
         {
             var currentWinner = "";
@@ -141,7 +160,6 @@ namespace Poker
             //For each player
             foreach (var player in players)
             {
-
                 var tempEvaluateHand = new EvaluateHand(player.Cards);
 
                 //If the current hand is greater than the current winning hand
@@ -157,8 +175,37 @@ namespace Poker
                     //Check if the current player high card is equal to the winning player high card
                     if (tempEvaluateHand.HighCard == winnerHand.HighCard)
                     {
-                        //both the players are the winners
-                        currentWinner += " and " + player.Name;
+                        var count = 0;
+
+                        //Check the hand in reverse order
+                        for (var i = 4; i >= 0; i--)
+                        {
+                            //If the current hand's kicker card is higher than the winner hand's kicker card
+                            if (tempEvaluateHand.cardNumbers[i] > winnerHand.cardNumbers[i])
+                            {
+                                //Replace the current winning hand
+                                currentWinner = player.Name;
+                                winnerHand = tempEvaluateHand;
+
+                            }
+                            //If the current hand's kicker card is equal to winning hand's kicker card
+                            else if (tempEvaluateHand.cardNumbers[i] == winnerHand.cardNumbers[i])
+                            {
+                                //Increment the counter
+                                count++;
+                            }
+                        };
+
+                        //If the current hand's cards all match the winning hand's cards
+                        if (count == 5)
+                        {
+                            //A Tie has occurred
+                            tie = true;
+
+                            //Add the current player
+                            currentWinner += " and " + player.Name;
+                        }
+
                     }
                     //If the current player high card is greater than the winning player high card
                     else if (tempEvaluateHand.HighCard > winnerHand.HighCard)
@@ -170,16 +217,18 @@ namespace Poker
                 }
             }
 
+            //Create dictionary with winner name, hand, high card, and tie information
+            Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                { "winner", currentWinner },
+                { "hand", winnerHand.MyHand.ToString() },
+                { "highCard", winnerHand.HighCard.ToString()},
+                { "isTie", tie.ToString()},
+            };
 
 
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("winner", currentWinner);
-            dict.Add("hand", winnerHand.MyHand.ToString());
-            dict.Add("highCard", winnerHand.HighCard.ToString());
-
+            //Return the dictionary
             return dict;
-
-
         }
     }
 }

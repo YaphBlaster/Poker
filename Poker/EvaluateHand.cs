@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Poker
 {
@@ -15,8 +11,7 @@ namespace Poker
         Nothing,
         OnePair,
         ThreeOfAKind,
-        Flush,
-        RoyalFlush
+        Flush
     }
 
     class EvaluateHand
@@ -29,6 +24,7 @@ namespace Poker
         private List<Card> cards;
         public int HighCard { get; set; }
         public Hand MyHand { get; private set; }
+        public List<int> cardNumbers = new List<int>();
 
         public EvaluateHand(List<Card> Hand)
         {
@@ -57,6 +53,12 @@ namespace Poker
 
         private Hand EvaluateMyHand()
         {
+            // Arrange the card numbers into a list to be used to determine tie breakers
+            foreach (var card in cards)
+            {
+                cardNumbers.Add((int)card.MyValue);
+            }
+
             if (Flush())
                 return Hand.Flush;
             else if (ThreeOfAKind())
@@ -71,8 +73,10 @@ namespace Poker
 
         }
 
-
-        private void GetNumberOfSuit()
+        /// <summary>
+        /// Evaluates the number of specific suits in each hand
+        /// </summary>
+        private void NumberOfSuits()
         {
             //Clear out any previous attempt
             heartsSum = 0;
@@ -139,10 +143,14 @@ namespace Poker
             return false;
         }
 
+        /// <summary>
+        /// Evaluate if there is a flush
+        /// </summary>
+        /// <returns>If flush is true of false</returns>
         private bool Flush()
         {
             //get the number of each suit on hand
-            GetNumberOfSuit();
+            NumberOfSuits();
 
             //set the high card in case of a tie
             HighCard = (int)cards[4].MyValue;
