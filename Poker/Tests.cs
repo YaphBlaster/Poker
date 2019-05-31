@@ -133,7 +133,10 @@ namespace Poker
         {
             //Arrange
             string[] playerNames = { "Joe", "Bob", "Sally" };
-            string[] playerCards = { "QD, 8D, KD, 7D, 3D", "AS, QS, 8S, 6S, 4S", "4S, 4H, 3H, QC, 8C" };
+            string[] playerCards = {
+                "QD, 8D, KD, 7D, 3D",
+                "AS, QS, 8S, 6S, 4S",
+                "4S, 4H, 3H, QC, 8C" };
 
             //Act
             CreatePlayers(playerNames, playerCards);
