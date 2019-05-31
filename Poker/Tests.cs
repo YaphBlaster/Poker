@@ -6,8 +6,9 @@ namespace Poker
     [TestClass]
     public class ProgramTests
     {
-        // these are needed on every test
+        //A list of players are needed on every test
         List<Player> Players = new List<Player>();
+
         string Name = "Joe";
 
 
@@ -47,7 +48,6 @@ namespace Poker
             Assert.AreEqual("ThreeOfAKind", result["hand"]);
         }
 
-
         [TestMethod]
         public void CanDetectOnePair()
         {
@@ -75,6 +75,24 @@ namespace Poker
             //Assert
             Assert.AreEqual("Nothing", result["hand"]);
         }
+
+        [TestMethod]
+        public void CanDetectTie()
+        {
+            //Arrange
+            string[] playerNames = { "Joe", "Bob" };
+            string[] playerCards = {
+                "2H, 3H, 4h, 5H, 6H",
+                "2C, 3C, 4C, 5C, 6C"};
+
+            //Act
+            CreatePlayers(playerNames, playerCards);
+            var result = Program.EvaluatePokerHands(Players);
+
+            //Assert
+            Assert.IsTrue(bool.Parse(result["isTie"]));
+        }
+
 
         [TestMethod]
         public void CanDetermineHighCard()

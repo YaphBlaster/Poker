@@ -13,6 +13,7 @@ namespace Poker
             "\n 3. Quit";
 
         private static List<Player> Players = new List<Player>();
+        private static bool tie = false;
 
 
         /// <summary>
@@ -53,13 +54,14 @@ namespace Poker
                         var splitPotMessage = ". They will have to split the pot";
 
                         //Display the winner and winning hand
-                        Console.WriteLine("\nThe " + (Players.Count > 1 ? "winners are" : "winner is") + ": " + winner["winner"] + (Players.Count > 1 ? splitPotMessage : null));
+                        Console.WriteLine("\nThe " + (tie ? "winners are" : "winner is") + ": " + winner["winner"] + (tie ? splitPotMessage : null));
                         Console.WriteLine("With a hand of: " + winner["hand"]);
                         Console.WriteLine("And a high card of: " + (Card.VALUE)int.Parse(winner["highCard"]));
                         Console.WriteLine("-------------------------");
 
                         //Clear the Players list for the next players
                         Players.Clear();
+                        tie = false;
                         break;
                 }
             }//Exit if the user has chosen option 3
@@ -146,8 +148,8 @@ namespace Poker
         /// <summary>
         /// Evaluates player hands
         /// </summary>
-        /// <param name="players">List of</param>
-        /// <returns></returns>
+        /// <param name="players">List of players to evaluate their hands</param>
+        /// <returns>Dictionary object with winner name, hand, high card, and tie information</returns>
         public static Dictionary<string, string> EvaluatePokerHands(List<Player> players)
         {
             var currentWinner = "";
@@ -198,6 +200,8 @@ namespace Poker
                         if (count == 5)
                         {
                             //A Tie has occurred
+                            tie = true;
+
                             //Add the current player
                             currentWinner += " and " + player.Name;
                         }
@@ -213,11 +217,15 @@ namespace Poker
                 }
             }
 
-            //Create dictionary with winner name, hand, and high card
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("winner", currentWinner);
-            dict.Add("hand", winnerHand.MyHand.ToString());
-            dict.Add("highCard", winnerHand.HighCard.ToString());
+            //Create dictionary with winner name, hand, high card, and tie information
+            Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                { "winner", currentWinner },
+                { "hand", winnerHand.MyHand.ToString() },
+                { "highCard", winnerHand.HighCard.ToString()},
+                { "isTie", tie.ToString()},
+            };
+
 
             //Return the dictionary
             return dict;
