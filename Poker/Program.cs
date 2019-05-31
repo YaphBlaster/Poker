@@ -23,6 +23,8 @@ namespace Poker
         private static void Main(string[] args)
         {
             var chosenOption = 0;
+            var splitPotMessage = ". They will have to split the pot";
+
 
             //Prompt user for input
             do
@@ -51,7 +53,7 @@ namespace Poker
                         Console.Clear();
                         //Evaluate the hands of the players
                         var winner = EvaluatePokerHands(Players);
-                        var splitPotMessage = ". They will have to split the pot";
+
 
                         //Display the winner and winning hand
                         Console.WriteLine("\nThe " + (IsTie ? "winners are" : "winner is") + ": " + winner["winner"] + (IsTie ? splitPotMessage : null));
@@ -168,6 +170,8 @@ namespace Poker
                     //Replace the current winning hand
                     winnerHand = tempEvaluateHand;
                     currentWinner = player.Name;
+
+                    IsTie = false;
                 }
                 //If there is a tie with the current winning hand
                 else if (tempEvaluateHand.MyHand == winnerHand.MyHand)
@@ -186,6 +190,8 @@ namespace Poker
                                 //Replace the current winning hand
                                 currentWinner = player.Name;
                                 winnerHand = tempEvaluateHand;
+
+                                IsTie = false;
 
                             }
                             //If the current hand's kicker card is equal to winning hand's kicker card
@@ -213,6 +219,8 @@ namespace Poker
                         //Replace the current winning hand
                         winnerHand = tempEvaluateHand;
                         currentWinner = player.Name;
+
+                        IsTie = false;
                     }
                 }
             }
